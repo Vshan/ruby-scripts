@@ -1,3 +1,6 @@
+# How to use:
+# $ ruby ffgif.rb <filename> <start (in format: hh:mm:ss)> <end> <fps> <width> <output name>
+
 def convert_str_to_time(start)
   hour, minute, second = start.split(":").map(&:to_i)
   seconds = second + (minute*60) + (hour*60*60)
