@@ -3,7 +3,7 @@
 
 def convert_str_to_time(start)
   hour, minute, second = start.split(":").map(&:to_i)
-  seconds = second + (minute*60) + (hour*60*60)
+  second + (minute*60) + (hour*60*60)
 end
 
 def validate_time(time)
