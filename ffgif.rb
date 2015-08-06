@@ -16,11 +16,11 @@ def generate_gif(vid, start_sec, total_sec, fps = 10, scale = 600, output_name =
   system("rm palette.png")
 end
 
-filename = ARGV[0]
-start = ARGV[1]
-fin = ARGV[2]
-fps = ARGV[3]
-scale = ARGV[4]
+filename    = ARGV[0]
+start       = ARGV[1]
+fin         = ARGV[2]
+fps         = ARGV[3]
+scale       = ARGV[4]
 output_name = ARGV[5]
 
 if validate_time(start) && validate_time(fin)
