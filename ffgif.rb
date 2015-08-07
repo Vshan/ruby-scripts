@@ -1,3 +1,5 @@
+#!/usr/bin/ruby
+
 # How to use:
 # $ ruby ffgif.rb <filename> <start (in format: hh:mm:ss)> <end> <fps> <width> <output name>
 
