@@ -1,7 +1,14 @@
 #!/usr/bin/ruby
 
 # How to use:
-# $ ruby ffgif.rb <filename> <start (in format: hh:mm:ss)> <end> <fps> <width> <output name>
+# $ ./ffgif.rb <filename> <start (in format: hh:mm:ss)> <end> <fps> <width> <output name>
+
+filename    = ARGV[0]
+start       = ARGV[1]
+fin         = ARGV[2]
+fps         = ARGV[3]
+scale       = ARGV[4]
+output_name = ARGV[5]
 
 def convert_str_to_time(start)
   hour, minute, second = start.split(":").map(&:to_i)
@@ -18,12 +25,21 @@ def generate_gif(vid, start_sec, total_sec, fps = 10, scale = 600, output_name =
   system("rm palette.png")
 end
 
-filename    = ARGV[0]
-start       = ARGV[1]
-fin         = ARGV[2]
-fps         = ARGV[3]
-scale       = ARGV[4]
-output_name = ARGV[5]
+def validate_filename
+  
+end
+
+def validate_fps
+  
+end
+
+def validate_width
+  
+end
+
+def validate_outputname
+  
+end
 
 if validate_time(start) && validate_time(fin)
   start_in_sec = convert_str_to_time(start)
