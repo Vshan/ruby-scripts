@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 
 # How to use:
-# $ ./ffgif.rb <filename> <start (in format: hh:mm:ss)> <end> <fps> <width> <output name>
+# $ ./ffgif <filename> <start (in format: hh:mm:ss)> <end> <fps> <width> <output name>
 
 filename    = ARGV[0]
 start       = ARGV[1]
