@@ -1,0 +1,82 @@
+#!/usr/bin/ruby
+# Prereqs to run this script:
+
+# $ gem install koala
+# $ gem install dotenv
+# $ export FBKEY='fb key goes here'
+
+# How to use:
+# $ ruby faceb.rb <page_search_word> <message>
+
+# OR to read message from file:
+# $ ruby faceb.rb <page_search_word> FILE=<filename>
+
+require 'koala'
+require 'dotenv'
+
+Dotenv.load
+TOO_MANY_CALLS_CODES    = [17, 341]
+page_search_word        = ARGV[0]
+message_to_post         = ARGV[1]
+
+def initialize_graph(fbkey = ENV['FBKEY'])
+  Koala::Facebook::API.new(fbkey)
+end
+
+def get_pages(page, graph = initialize_graph)
+  begin
+    graph.get_connection('search', '?', :q => page, type: :page)
+  rescue Koala::Facebook::AuthenticationError
+    puts "Your key has expired or does not exist. Please try again with another key."
+  rescue Koala::Facebook::APIError => e
+    if TOO_MANY_CALLS_CODES.include? e.fb_error_code
+      puts "Facebook: Too many API calls. Please wait 30 minutes."
+      puts "Application will retry post 30 minutes."
+      sleep(30*60)
+      retry
+    end
+  end
+end
+
+def put_msg_to_page(message, page_id, graph = initialize_graph)
+  begin
+    graph.put_connections(page_id, "feed", :message => message)
+  rescue Koala::Facebook::AuthenticationError
+    puts "Your key has expired or does not exist. Please try again with another key."
+  rescue Koala::Facebook::APIError => e
+    if TOO_MANY_CALLS_CODES.include? e.fb_error_code
+      puts "Facebook: Too many API calls, limit exceeded. Please wait 30 minutes."
+      puts "Application sleeping for 30 minutes."
+      sleep(30*60)
+      retry
+    end
+  end
+end
+
+def msg_to_all_pages(message, page, graph = initialize_graph)
+  get_pages(page, graph).each do |p|
+    page_id = p["id"]
+    put_msg_to_page(message, page_id, graph)
+  end
+end
+ 
+if ENV['FBKEY']
+  if page_search_word && message_to_post
+    if message_to_post.split("=")[0] == "FILE"
+      filename = message_to_post.split("=")[1]
+      message_to_post = ""
+      File.open(filename, 'r') do |f|
+        f.each_line { |l| message_to_post += (l + "\n") }
+      end
+    end
+    msg_to_all_pages(message_to_post, page_search_word)
+  elsif page_search_word
+    puts "Enter message: "
+    m = gets.chomp
+    msg_to_all_pages m, page_search_word
+  end
+else
+  puts "FB auth key has not been set yet."
+  puts "to set:"
+  puts "$ export FBKEY=<key goes here>"
+end
