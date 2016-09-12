@@ -4,6 +4,11 @@
 
 len="0"
 
+if [ "$#" != "1" ]; then
+    echo "Usage: ./ytpldl <folder_name> <no_of_videos> <url>"
+    exit 1
+fi
+
 if [ ! -d "$1" ]; then
     mkdir "$1"
 fi
