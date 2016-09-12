@@ -1,0 +1,20 @@
+#!/usr/bin/zsh
+
+# usage: ./ytpldl <folder_name> <no_of_videos> <url>
+
+len="0"
+
+if [ ! -d "$1" ]; then
+    mkdir "$1"
+fi
+
+function get_len {
+    cd "$1"
+    len=$(ls | wc -l)
+    cd ..
+}
+
+while [ "$len" -ne "$2" ]; do
+    youtube-dl -o '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s' "$3" --playlist-start "63"
+    get_len "$1"
+done
