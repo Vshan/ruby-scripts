@@ -15,6 +15,6 @@ function get_len {
 }
 
 while [ "$len" -ne "$2" ]; do
-    youtube-dl -o '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s' "$3" --playlist-start "63"
+    youtube-dl -o '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s' "$3" --playlist-start "$len"
     get_len "$1"
 done
